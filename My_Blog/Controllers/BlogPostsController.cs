@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -14,6 +15,14 @@ namespace My_Blog.Controllers
     public class BlogPostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        //[Authorize]
+        //[Authorize(Roles ="Admin")]
+        ////[Authorize(Roles ="Admin, Moderator")]
+        public ActionResult AdminIndex()
+        {
+            return View("Index", db.BlogPosts.ToList());
+        }
 
         // GET: BlogPosts
         
@@ -52,19 +61,28 @@ namespace My_Blog.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,Body,MediaUrl,Published")] BlogPost blogPost)
+        public ActionResult Create([Bind(Include = "Id,Title,Body,MediaUrl,Published")] BlogPost blogPost, 
+            HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
                 var Slug = StringUtilities.URLFriendly(blogPost.Title);
+
                 if (String.IsNullOrWhiteSpace(Slug))
                 {
                     ModelState.AddModelError("Title", "Invalid title");
                     return View(blogPost);
                 }
+                if (ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaUrl = "/Uploads/" + fileName;
+                }
                 if(db.BlogPosts.Any(p=> p.Slug == Slug))
                 {
                     ModelState.AddModelError("Title", "The title must be unique");
+
                     return View(blogPost);
                 }
 
