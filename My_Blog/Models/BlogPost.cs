@@ -12,8 +12,10 @@ namespace My_Blog.Models
         public string Title { get; set; }
         public string Abstract { get; set; }
         public string Slug { get; set; }
+
         [AllowHtml]
         public string Body { get; set; }
+
         public string MediaUrl { get; set; } // This URL will record the path of the media or image.
         public bool Published { get; set; } // This will only publish once the blog is completd.
         public DateTimeOffset Created { get; set; }

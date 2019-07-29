@@ -4,80 +4,55 @@
     ViewBag.Title = "Details";
 }
 
+<article class="blog-post px-3 py-5 p-md-5">
+    <div class="container">
+        <header class="blog-post-header">
+            <h2 class="title mb-2">@Model.Title</h2>
+            <div class="meta mb-3"><span class="date">Published on @Model.Created.ToString("MMM d, yyyy")</span><span class="comment"><a href="#">@Model.Comments.Count() comments</a></span></div>
+        </header>
 
-<h2>Details</h2>
+        <div class="blog-post-body">
+            <figure class="blog-banner">
 
-<div>
-    <h4>BlogPost</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title) 
-        </dt>
+                @if (Model.MediaUrl != null)
+                {
+                    <a href="#"><img class="img-fluid" src="@Model.MediaUrl" alt="@Model.Title"></a>
+                }
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+            </figure>
+            <br />
+            @Html.Raw(Model.Body)
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Abstract)
-        </dt>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Abstract)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
+        <div class="blog-comments-section">
+            @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created).ToList())
+            {
+                <div id="disqus_thread">
+                    <div class="row">
+                        <div class="col-md-4">Written by: @comment.Author.Email</div>
+                        <div class="col-md-offset-1 col-md-4">@comment.Created.ToString("MMM d, yyyy")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @comment.Body
+                        </div>
+                    </div>
+                </div>
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
+        </div><!--//blog-comments-section-->
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
+    </div><!--//container-->
+</article>
 
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MediaUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MediaUrl)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Published)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Published)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+@*<section class="promo-section theme-bg-light py-5 text-center">
+    <div class="container">
+        <h2 class="title">Promo Section Heading</h2>
+        <p>You can use this section to promote your side projects etc. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. </p>
+        <figure class="promo-figure">
+            <a href="https://made4dev.com" target="_blank"><img class="img-fluid" src="assets/images/promo-banner.jpg" alt="image"></a>
+        </figure>
+    </div><!--//container-->
+</section><!--//promo-section-->*@

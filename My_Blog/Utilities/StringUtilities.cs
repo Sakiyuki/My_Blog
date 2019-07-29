@@ -73,69 +73,69 @@ namespace My_Blog.Utilities
             {
                 return "a";
             }
-    else if("èéêëę".Contains(s))
+            else if ("èéêëę".Contains(s))
             {
                 return "e";
             }
-             else if("ìíîïı".Contains(s))
+            else if ("ìíîïı".Contains(s))
             {
                 return "i";
             }
-            else if("òóôõöøőð".Contains(s))
+            else if ("òóôõöøőð".Contains(s))
             {
                 return "o";
             }
-           else if("ùúûüŭů".Contains(s))
+            else if ("ùúûüŭů".Contains(s))
             {
                 return "u";
             }
-            else if("çćčĉ".Contains(s))
+            else if ("çćčĉ".Contains(s))
             {
                 return "c";
             }
-            else if("żźž".Contains(s))
+            else if ("żźž".Contains(s))
             { return "z"; }
-            else if("śşšŝ".Contains(s))
+            else if ("śşšŝ".Contains(s))
             {
                 return "s";
             }
-            else if("ñń".Contains(s))
+            else if ("ñń".Contains(s))
             {
                 return "n";
             }
-            else if("ýÿ".Contains(s))
+            else if ("ýÿ".Contains(s))
             {
                 return "y";
             }
-            else if("ğĝ".Contains(s))
+            else if ("ğĝ".Contains(s))
             {
                 return "g";
             }
-            else if(c == 'ř')
+            else if (c == 'ř')
             {
                 return "r";
             }
-            else if(c == 'ł')
+            else if (c == 'ł')
             {
                 return "l";
             }
-            else if(c == 'đ')            
-                {
+            else if (c == 'đ')
+            {
                 return "d";
             }
-            else if(c == 'ß')
+            else if (c == 'ß')
             {
                 return "ss";
             }
-            else if(c == 'Þ')
+            else if (c == 'Þ')
             {
                 return "th";
             }
-            else if(c == 'ĥ')
+            else if (c == 'ĥ')
             {
                 return "h";
             }
-            else if(c == 'ĵ')
+            else if (c == 'ĵ')
             {
                 return "j";
             }
@@ -143,7 +143,7 @@ namespace My_Blog.Utilities
             {
                 return "";
             }
-}    
+          }    
 
     }
 }

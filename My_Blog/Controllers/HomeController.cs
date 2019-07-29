@@ -1,5 +1,7 @@
 ﻿using My_Blog.Models;
+using My_Blog.Utilities;
 using My_Blog.Views.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,12 +14,22 @@ using System.Web.Mvc;
 
 namespace My_Blog.Controllers
 {
+    [RequireHttps]
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        public ActionResult Index()
+
+        public ActionResult Index(int? page, string searchStr)
         {
-            return View(db.BlogPosts.Where( b=> b.Published).OrderByDescending(b =>b.Created).ToList());
+            ViewBag.Search = searchStr;
+
+            var searcher = new DataUtilities();
+            var blogList = searcher.IndexSearch(searchStr);
+
+            int pageSize = 5; // the number of posts you want to display per page
+            int pageNumber = (page ?? 1);
+
+            return View(blogList.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult About()
@@ -33,6 +45,9 @@ namespace My_Blog.Controllers
             EmailModel model = new EmailModel();
             return View(model);
         }
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Contact(EmailModel model)
@@ -45,7 +60,7 @@ namespace My_Blog.Controllers
                     var email = new MailMessage(from, WebConfigurationManager.AppSettings["emailto"])
                     {
                         Subject = model.Subject,
-                        Body = $"You have an email from{model.FromName} <br/> {model.Body}", 
+                        Body = $"You have an email from {model.FromName} <br/> {model.Body}", 
                         IsBodyHtml = true
                     };
 
@@ -53,7 +68,6 @@ namespace My_Blog.Controllers
                     await svc.SendAsync(email);
 
                     return View(new EmailModel());
-
                 }
                 catch(Exception ex)
                 {

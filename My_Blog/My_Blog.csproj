@@ -18,7 +18,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44341</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -181,6 +181,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DataUtilities.cs" />
     <Compile Include="Utilities\ImageUploadValidator.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Views\Model\EmailModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\images\About_me.jpg" />
     <Content Include="assets\css\theme-1.css" />
     <Content Include="assets\css\theme-2.css" />
     <Content Include="assets\css\theme-3.css" />
@@ -528,9 +530,10 @@
     <Content Include="assets\scss\theme\_demo.scss" />
     <Content Include="assets\scss\theme\_mixins.scss" />
     <Content Include="assets\scss\theme\_responsive.scss" />
-    <Content Include="App_Start\private.config">
+    <Content Include="private.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Properties\PublishProfiles\BryantCaldwellBlog - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -715,6 +718,7 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Account\ResendEmailConfirmation.cshtml" />
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
+    <Content Include="Views\Home\blog-post.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -751,7 +755,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>55837</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:55837/</IISUrl>
+          <IISUrl>https://localhost:44341/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

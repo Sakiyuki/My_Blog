@@ -1,13 +1,15 @@
-﻿@model IEnumerable<My_Blog.Models.BlogPost>
+﻿@using PagedList;
+@using PagedList.Mvc
+@using My_Blog.Models
 
-@{ 
-    ViewBag.Title = "Home Page";
-}
+@model IPagedList<BlogPost>
 
 <section class="cta-section theme-bg-light py-5">
     <div class="container text-center">
-        <h2 class="heading">DevBlog - A Blog Template Made For Developers</h2>
-        <div class="intro">Welcome to my blog. Subscribe and get my latest blog post in your inbox.</div>
+        <h2 class="heading">Bryant's Blog.  How I went from Newbie to Ninja!</h2>
+        <div class="intro">Welcome to my blog. Please, register to leave a comment.</div>
+       
+        @*This form is a great candidate for rewiring to perform your Search...*@
         <form class="signup-form form-inline justify-content-center pt-3">
             <div class="form-group">
                 <label class="sr-only" for="semail">Your email</label>
@@ -17,6 +19,7 @@
         </form>
     </div><!--//container-->
 </section>
+
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
         @foreach (var blogpost in Model)
@@ -24,13 +27,24 @@
             <a href="@Url.Action("Details","BlogPosts", new {slug = blogpost.Slug})">
                 <div class="item mb-5">
                     <div class="media">
-                        <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="~/assets/images/blog/blog-post-thumb-1.jpg" alt="image">
+
+                        @if (blogpost.MediaUrl != null)
+                        {
+                            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="@blogpost.MediaUrl" alt="image">
+                        }
+                        else
+                        { 
+                            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="~/assets/images/blog/blog-post-thumb-1.jpg" alt="image">
+                        }
+                           
                         <div class="media-body">
-                            <h3 class="title mb-1"><a href="blog-post.html">
-                                  </a>@blogpost.Title</h3>
-                            <div class="meta mb-1"><span class="date">@blogpost.Created</span><span class="time">5 min read</span><span class="comment"><a href="#">8 comments</a></span></div>
-                            <div class="intro">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies...</div>
-                            <a class="more-link" href="blog-post.html">Read more &rarr;</a>
+                            <h3 class="title mb-1">
+                                @Html.ActionLink(blogpost.Title, "Details", "BlogPosts", new { slug = blogpost.Slug}, null)
+                            </h3>
+
+                            <div class="meta mb-1"><span class="date">@blogpost.Created</span><span class="comment">@blogpost.Comments.Count() comments</span></div>
+                            <div class="intro">@blogpost.Abstract</div>
+                            <a class="more-link" href="@Url.Action("Details","BlogPosts", new {slug = blogpost.Slug})">Read more &rarr;</a>
                         </div><!--//media-body-->
                     </div><!--//media-->
                 </div><!--//item-->
@@ -38,11 +52,29 @@
         }
 
 
+            <nav class="blog-nav nav nav-justified my-5">
+                @*<a class="nav-link-prev nav-item nav-link d-none rounded-left" href="#">Previous<i class="arrow-prev fas fa-long-arrow-alt-left"></i></a>
+                <a class="nav-link-next nav-item nav-link rounded" href="blog-list.html">Next<i class="arrow-next fas fa-long-arrow-alt-right"></i></a>*@
 
-        <nav class="blog-nav nav nav-justified my-5">
-            <a class="nav-link-prev nav-item nav-link d-none rounded-left" href="#">Previous<i class="arrow-prev fas fa-long-arrow-alt-left"></i></a>
-            <a class="nav-link-next nav-item nav-link rounded" href="blog-list.html">Next<i class="arrow-next fas fa-long-arrow-alt-right"></i></a>
-        </nav>
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }))
+            </nav>
 
+
+
+        @*@using (Html.BeginForm("Index", "BlogPosts", FormMethod.Get, new { @class = "form" }))
+        {
+            <div class="controls controls-row search-row">
+                <input id="searchStr" name="searchStr" class="input-block-level" type="text" placeholder="Search" />
+                <button id="searchStr" name="searchStr" class="btn btn-success" type="submit">
+                    <i class="icon-search"></i>
+                </button>
+
+            </div>
+        }*@
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }));
     </div>
 </section>
+
+

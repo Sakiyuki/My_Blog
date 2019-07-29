@@ -60,6 +60,46 @@
 
     </dl>
 </div>
+
+@*Conditionally render the "Add Comment" form*@
+
+@*Create a form t colledct the Comment from the logged in user*@
+
+@if (User.Identity.IsAuthenticated)
+{
+    using (Html.BeginForm("Create", "Comment", FormMethod.Post)) 
+}
+@*Displaying the comments associated with the BlogPost*@
+
+
+{
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.Slug)
+@Html.Hidden("BlogPostId", Model.Id)
+
+@*I would like to order these commments by descending created date*@
+@foreach(var comment in Model.Comments.OrderByDescending(c =>c.Created))
+{ 
+    <hr/>
+    <div class="row">
+        Written by @comment.Author.Email on @comment.Created.ToString("MMMM d, yyyy")
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @comment.Body
+        </div>
+
+    </div>
+
+}
+
+<testarea name="CommentBody" rows="5" cols="100" placeholder="Add Comment"></testarea>
+<br />
+<button class="btn btn-primary" type="submit">Add</button>
+}
+
+
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
